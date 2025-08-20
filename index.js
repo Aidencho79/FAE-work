@@ -93,7 +93,7 @@ function EntryForm({ onSave, editing }) {
     const tags = tagsInput.split(",").map(s => s.trim()).filter(Boolean);
     const entry = {
       id: editing?.id ?? uid(),
-      date, starttime, endtime, client, department, engineer, project, title, details, workType, //
+      date, starttime, endtime, client, department, engineer, project, title, details, workType,
       timeSpent: minutes,
       nextActions,
       tags,
