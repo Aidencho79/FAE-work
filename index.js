@@ -92,16 +92,19 @@ function EntryForm({ onSave, editing }) {
     <div className="card">
       <h2>업무일지 작성</h2>
       <div className="row"><label>작성일자</label><input type="date" value={date} onChange={e=>setDate(e.target.value)} /></div>
+      <div className="row"><label>미팅시간</label><input type="time" value={from} onChange={e=>setFrom(e.target.value)} /></div>
+      <div className="row"><label>소요 시간(분)</label><input type="number" min="0" step="15" value={timeSpent} onChange={e=>setTimeSpent(e.target.value)} /></div>
       <div className="row"><label>고객사</label><input value={client} onChange={e=>setClient(e.target.value)} placeholder="예) Samsung MX" /></div>
+      <div className="row"><label>담당자</label><input value={client} onChange={e=>setClient(e.target.value)} placeholder="예) Samsung MX" /></div>
+      <div className="row"><label>부서</label><input value={client} onChange={e=>setClient(e.target.value)} placeholder="예) Samsung MX" /></div>
       <div className="row"><label>프로젝트</label><input value={project} onChange={e=>setProject(e.target.value)} placeholder="예) AW37014" /></div>
       <div className="row"><label>업무 제목</label><input value={title} onChange={e=>setTitle(e.target.value)} placeholder="예) OVP 스펙 확인 및 이슈 정리" /></div>
       <div className="row"><label>상세 내용</label><textarea rows="5" value={details} onChange={e=>setDetails(e.target.value)} placeholder="회의 내용, 디버깅 결과, 고객 요청사항 등" /></div>
       <div className="row"><label>업무 유형</label>
         <select value={workType} onChange={e=>setWorkType(e.target.value)}>
-          {["미팅","디버깅","리뷰","교육","문서화","출장","지원","기타"].map(t=> <option key={t} value={t}>{t}</option>)}
+          {["영업미팅","기술지원","품질이슈","승인관련","신제품","트렌드","기타"].map(t=> <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
-      <div className="row"><label>소요 시간(분)</label><input type="number" min="0" step="15" value={timeSpent} onChange={e=>setTimeSpent(e.target.value)} /></div>
       <div className="row"><label>다음 액션</label><textarea rows="3" value={nextActions} onChange={e=>setNextActions(e.target.value)} placeholder="To-Do / 일정 / 담당자" /></div>
       <div className="row"><label>태그(쉼표 구분)</label><input value={tagsInput} onChange={e=>setTagsInput(e.target.value)} placeholder="예) OVP, 4Ch, LDO" /></div>
       <div className="right"><button onClick={save}>{editing ? "수정 저장" : "저장"}</button></div>
