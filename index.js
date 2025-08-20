@@ -124,7 +124,7 @@ function Filters({ query, setQuery, from, setFrom, to, setTo, type, setType, tag
       <div className="row"><label>종료일</label><input type="date" value={to} onChange={e=>setTo(e.target.value)} /></div>
       <div className="row"><label>업무 유형</label>
         <select value={type} onChange={e=>setType(e.target.value)}>
-          {["전체","미팅","디버깅","리뷰","교육","문서화","출장","지원","기타"].map(t=> <option key={t} value={t}>{t}</option>)}
+          {["전체","영업미팅","기술지원","품질이슈","트렌드","신제품","기타"].map(t=> <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
       <div className="row"><label>태그 포함</label><input value={tag} onChange={e=>setTag(e.target.value)} placeholder="예) OVP" /></div>
