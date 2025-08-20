@@ -50,6 +50,9 @@ function useLocalStorage(key, initial) {
 
 function EntryForm({ onSave, editing }) {
   const [date, setDate] = useState(() => editing?.date ?? new Date().toISOString().slice(0,10));
+  const [starttime, setStarttime] = useState(editing?.starttime ?? "");
+  const [endtime, setEndtime] = useState(editing?.endtime ?? "");
+  const [timeSpent, setTimeSpent] = useState(editing?.timeSpent ?? 60);
   const [client, setClient] = useState(editing?.client ?? "");
   const [department, setDepartment] = useState(editing?.department ?? "");
   const [engineer, setEngineer] = useState(editing?.department ?? "");
@@ -57,7 +60,6 @@ function EntryForm({ onSave, editing }) {
   const [title, setTitle] = useState(editing?.title ?? "");
   const [details, setDetails] = useState(editing?.details ?? "");
   const [workType, setWorkType] = useState(editing?.workType ?? "미팅");
-  const [timeSpent, setTimeSpent] = useState(editing?.timeSpent ?? 60);
   const [nextActions, setNextActions] = useState(editing?.nextActions ?? "");
   const [tagsInput, setTagsInput] = useState((editing?.tags ?? []).join(", "));
   const fileRef = useRef(null);
@@ -65,6 +67,9 @@ function EntryForm({ onSave, editing }) {
   useEffect(() => {
     if (!editing) return;
     setDate(editing.date);
+    setStarttime(editing.starttime);
+    setEndtime(editing.endtime);
+    setTimeSpent(editing.timeSpent);
     setClient(editing.client);
     setDepartment(editing.department);
     seetEngineer(editing.engineer);
@@ -72,18 +77,24 @@ function EntryForm({ onSave, editing }) {
     setTitle(editing.title);
     setDetails(editing.details);
     setWorkType(editing.workType);
-    setTimeSpent(editing.timeSpent);
     setNextActions(editing.nextActions);
     setTagsInput((editing.tags || []).join(", "));
   }, [editing?.id]);
 
   const save = () => {
     const now = Date.now();
+    let minutes = Number(timeSpent) || 0;
+    if (startTime && endTime) {
+      const [sh, sm] = startTime.split(":").map(Number);
+      const [eh, em] = endTime.split(":").map(Number);
+      minutes = (eh * 60 + em) - (sh * 60 + sm);
+      if (minutes < 0) minutes = 0; 
+    }
     const tags = tagsInput.split(",").map(s => s.trim()).filter(Boolean);
     const entry = {
       id: editing?.id ?? uid(),
-      date, client, project, title, details, workType,
-      timeSpent: Number(timeSpent) || 0,
+      date, starttime, endtime, client, department, engineer, project, title, details, workType, //
+      timeSpent: minutes,
       nextActions,
       tags,
       createdAt: editing?.createdAt ?? now,
@@ -96,6 +107,9 @@ function EntryForm({ onSave, editing }) {
     <div className="card">
       <h2>업무일지 작성</h2>
       <div className="row"><label>작성일자</label><input type="date" value={date} onChange={e=>setDate(e.target.value)} /></div>
+      <div className="row"><label>회의 시작</label><input type="time" value={starttime} onChange={e=>setStarttime(e.target.value)} /></div>
+      <div className="row"><label>회의 종료</label><input type="time" value={endTime} onChange={e=>setEndTime(e.target.value)} /></div>
+      <div className="row"><label>소요 시간(분)</label><input type="number" min="0" step="15" value={timeSpent} onChange={e=>setTimeSpent(e.target.value)} /></div>
       <div className="row"><label>고객사</label><input value={client} onChange={e=>setClient(e.target.value)} placeholder="예) Samsung MX" /></div>
       <div className="row"><label>부서</label><input value={department} onChange={e=>setDepartment(e.target.value)} placeholder="예) PSG" /></div>
       <div className="row"><label>담당자</label><input value={engineer} onChange={e=>setEngineer(e.target.value)} placeholder="예) 홍길동" /></div>
@@ -107,7 +121,6 @@ function EntryForm({ onSave, editing }) {
           {["영업미팅","기술지원","품질이슈","트렌드","신제품","기타"].map(t=> <option key={t} value={t}>{t}</option>)}
         </select>
       </div>
-      <div className="row"><label>소요 시간(분)</label><input type="number" min="0" step="15" value={timeSpent} onChange={e=>setTimeSpent(e.target.value)} /></div>
       <div className="row"><label>다음 액션</label><textarea rows="3" value={nextActions} onChange={e=>setNextActions(e.target.value)} placeholder="To-Do / 일정 / 담당자" /></div>
       <div className="row"><label>태그(쉼표 구분)</label><input value={tagsInput} onChange={e=>setTagsInput(e.target.value)} placeholder="예) OVP, 4Ch, LDO" /></div>
       <div className="right"><button onClick={save}>{editing ? "수정 저장" : "저장"}</button></div>
