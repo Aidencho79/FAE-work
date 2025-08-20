@@ -83,18 +83,11 @@ function EntryForm({ onSave, editing }) {
 
   const save = () => {
     const now = Date.now();
-    let minutes = Number(timeSpent) || 0;
-    if (startTime && endTime) {
-      const [sh, sm] = startTime.split(":").map(Number);
-      const [eh, em] = endTime.split(":").map(Number);
-      minutes = (eh * 60 + em) - (sh * 60 + sm);
-      if (minutes < 0) minutes = 0; 
-    }
     const tags = tagsInput.split(",").map(s => s.trim()).filter(Boolean);
     const entry = {
       id: editing?.id ?? uid(),
-      date, starttime, endtime, client, department, engineer, project, title, details, workType,
-      timeSpent: minutes,
+      date, client, department, engineer, project, title, details, workType,
+      timeSpent: Number(timeSpent)|| 0,
       nextActions,
       tags,
       createdAt: editing?.createdAt ?? now,
