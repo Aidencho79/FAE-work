@@ -51,6 +51,8 @@ function useLocalStorage(key, initial) {
 function EntryForm({ onSave, editing }) {
   const [date, setDate] = useState(() => editing?.date ?? new Date().toISOString().slice(0,10));
   const [client, setClient] = useState(editing?.client ?? "");
+  const [department, setDepartment] = useState(editing?.department ?? "");
+  const [engineer, setEngineer] = useState(editing?.department ?? "");
   const [project, setProject] = useState(editing?.project ?? "");
   const [title, setTitle] = useState(editing?.title ?? "");
   const [details, setDetails] = useState(editing?.details ?? "");
@@ -64,6 +66,8 @@ function EntryForm({ onSave, editing }) {
     if (!editing) return;
     setDate(editing.date);
     setClient(editing.client);
+    setDepartment(editing.department);
+    seetEngineer(editing.engineer);
     setProject(editing.project);
     setTitle(editing.title);
     setDetails(editing.details);
@@ -93,7 +97,8 @@ function EntryForm({ onSave, editing }) {
       <h2>업무일지 작성</h2>
       <div className="row"><label>작성일자</label><input type="date" value={date} onChange={e=>setDate(e.target.value)} /></div>
       <div className="row"><label>고객사</label><input value={client} onChange={e=>setClient(e.target.value)} placeholder="예) Samsung MX" /></div>
-      <div className="row"><label>부서</label><input value={client} onChange={e=>setDepartment(e.target.value)} placeholder="예) PSG" /></div>
+      <div className="row"><label>부서</label><input value={department} onChange={e=>setDepartment(e.target.value)} placeholder="예) PSG" /></div>
+      <div className="row"><label>담당자</label><input value={engineer} onChange={e=>setEngineer(e.target.value)} placeholder="예) 홍길동" /></div>
       <div className="row"><label>프로젝트</label><input value={project} onChange={e=>setProject(e.target.value)} placeholder="예) AW37014" /></div>
       <div className="row"><label>업무 제목</label><input value={title} onChange={e=>setTitle(e.target.value)} placeholder="예) OVP 스펙 확인 및 이슈 정리" /></div>
       <div className="row"><label>상세 내용</label><textarea rows="5" value={details} onChange={e=>setDetails(e.target.value)} placeholder="회의 내용, 디버깅 결과, 고객 요청사항 등" /></div>
